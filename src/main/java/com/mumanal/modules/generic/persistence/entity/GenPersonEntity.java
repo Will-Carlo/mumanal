@@ -22,6 +22,9 @@ public class GenPersonEntity extends AuditableEntity implements Serializable {
     @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
 
+    @Column(name = "second_name", length = 100)
+    private String secondName;
+
     @Column(name = "paternal_surname", length = 45)
     private String paternalSurname;
 
@@ -33,9 +36,6 @@ public class GenPersonEntity extends AuditableEntity implements Serializable {
 
     @Column(length = 100)
     private String email;
-
-    @Column(name = "image_url")
-    private String imageUrl;
 
     @Column(name = "identity_card", length = 45)
     private String identityCard;

@@ -145,7 +145,6 @@ public class UserServiceImpl implements UserService {
             paternalLastName = user.getPerson().getPaternalSurname();
             maternalLastName = user.getPerson().getMaternalSurname();
             email = user.getPerson().getEmail();
-            imageUrl = user.getPerson().getImageUrl();
         }
 
         String fullName = (firstName + " " + paternalLastName + " " + (maternalLastName != null ? maternalLastName : "")).trim();
