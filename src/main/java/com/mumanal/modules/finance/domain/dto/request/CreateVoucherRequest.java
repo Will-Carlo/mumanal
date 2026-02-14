@@ -28,7 +28,7 @@ public record CreateVoucherRequest(
 
         @NotNull(message = "Person information is required")
         @Valid
-        PersonReferenceDto person
+        PersonReferenceDto affiliate
 ) {
     public record BankReferenceDto(
             Integer id,

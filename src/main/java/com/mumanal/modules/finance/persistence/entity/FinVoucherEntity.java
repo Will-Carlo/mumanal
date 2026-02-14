@@ -32,9 +32,6 @@ public class FinVoucherEntity extends AuditableEntity implements Serializable {
     @Column(name = "registration_date", columnDefinition = "DATETIME(6)")
     private LocalDateTime registrationDate;
 
-//    @Column(name = "bank_name")
-//    private String bankName;
-
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal amount;
 
@@ -49,7 +46,6 @@ public class FinVoucherEntity extends AuditableEntity implements Serializable {
     private FinBankEntity bank;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id", nullable = false)
-    private GenPersonEntity person;
-
+    @JoinColumn(name = "affiliate_id", nullable = false)
+    private FinAffiliateEntity affiliate;
 }
