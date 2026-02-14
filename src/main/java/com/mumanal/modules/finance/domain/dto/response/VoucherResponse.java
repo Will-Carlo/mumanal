@@ -13,5 +13,5 @@ public record VoucherResponse(
         BigDecimal amount,
         LocalDate period,
         BankResponse bank,
-        PersonResponse person
+        AffiliateResponse affiliate
 ) {}

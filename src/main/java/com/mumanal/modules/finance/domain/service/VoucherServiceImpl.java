@@ -3,8 +3,10 @@ package com.mumanal.modules.finance.domain.service;
 import com.mumanal.modules.finance.domain.dto.request.CreateVoucherRequest;
 import com.mumanal.modules.finance.domain.dto.request.UpdateVoucherRequest;
 import com.mumanal.modules.finance.domain.dto.response.VoucherResponse;
+import com.mumanal.modules.finance.domain.repository.AffiliateRepository;
 import com.mumanal.modules.finance.domain.repository.BankRepository;
 import com.mumanal.modules.finance.domain.repository.VoucherRepository;
+import com.mumanal.modules.finance.persistence.entity.FinAffiliateEntity;
 import com.mumanal.modules.finance.persistence.entity.FinBankEntity;
 import com.mumanal.modules.finance.persistence.entity.FinVoucherEntity;
 import com.mumanal.modules.finance.persistence.mapper.VoucherMapper;
@@ -25,16 +27,18 @@ public class VoucherServiceImpl implements VoucherService {
     private final BankRepository bankRepository;       // Inyección de repo Banco
     private final PersonRepository personRepository;   // Inyección de repo Persona
     private final VoucherMapper voucherMapper;
+    private final AffiliateRepository affiliateRepository;
     private final String RESOURCE = "Voucher";
 
     public VoucherServiceImpl(VoucherRepository voucherRepository,
                               BankRepository bankRepository,
                               PersonRepository personRepository,
-                              VoucherMapper voucherMapper) {
+                              VoucherMapper voucherMapper, AffiliateRepository affiliateRepository) {
         this.voucherRepository = voucherRepository;
         this.bankRepository = bankRepository;
         this.personRepository = personRepository;
         this.voucherMapper = voucherMapper;
+        this.affiliateRepository = affiliateRepository;
     }
 
     @Override
@@ -59,8 +63,8 @@ public class VoucherServiceImpl implements VoucherService {
         voucher.setBank(bankEntity);
 
         // 2. Resolver PERSONA (Buscar o Crear)
-        GenPersonEntity personEntity = resolvePerson(request.person());
-        voucher.setPerson(personEntity);
+        FinAffiliateEntity affiliateEntity = resolveAffiliate(request.affiliate());
+        voucher.setAffiliate(affiliateEntity);
 
         // 3. Validar duplicidad de voucher (Mismo banco, mismo nro deposito)
         if (voucherRepository.existsByDepositNumberAndBank(request.depositNumber(), bankEntity.getId())) {
@@ -92,9 +96,9 @@ public class VoucherServiceImpl implements VoucherService {
         }
 
         if (request.personId() != null) {
-            GenPersonEntity person = personRepository.findById(request.personId())
+            FinAffiliateEntity affiliate = affiliateRepository.findById(request.personId())
                     .orElseThrow(() -> new ResourceNotFoundException("Person", "id", request.personId().toString()));
-            entity.setPerson(person);
+            entity.setAffiliate(affiliate);
         }
 
         voucherMapper.updateEntityFromDto(request, entity);
@@ -130,17 +134,17 @@ public class VoucherServiceImpl implements VoucherService {
         return bankRepository.save(newBank);
     }
 
-    private GenPersonEntity resolvePerson(CreateVoucherRequest.PersonReferenceDto dto) {
+    private FinAffiliateEntity resolveAffiliate(CreateVoucherRequest.AffiliateReferenceDto dto) {
         if (dto.id() != null) {
-            return personRepository.findById(dto.id())
-                    .orElseThrow(() -> new ResourceNotFoundException("Person", "id", dto.id().toString()));
+            return affiliateRepository.findById(dto.id())
+                    .orElseThrow(() -> new ResourceNotFoundException("Affiliate", "id", dto.id().toString()));
         }
 
         // Lógica de Crear Nueva Persona
         // Verificar si existe por CI antes de crear
-        if (dto.identityCard() != null && personRepository.findByIdentityCard(dto.identityCard()).isPresent()) {
+        if (dto.identityCard() != null && affiliateRepository.findByPersonIdentityCard(dto.identityCard()).isPresent()) {
             // Si existe por CI, lo usamos (autocompletado inteligente)
-            return personRepository.findByIdentityCard(dto.identityCard()).get();
+            return affiliateRepository.findByPersonIdentityCard(dto.identityCard()).get();
         }
 
         GenPersonEntity newPerson = new GenPersonEntity();
@@ -149,6 +153,11 @@ public class VoucherServiceImpl implements VoucherService {
         newPerson.setMaternalSurname(dto.maternalSurname());
         newPerson.setIdentityCard(dto.identityCard());
 
-        return personRepository.save(newPerson);
+        newPerson = personRepository.save(newPerson);
+
+        FinAffiliateEntity newAffiliate = new FinAffiliateEntity();
+        newAffiliate.setPerson(newPerson);
+
+        return affiliateRepository.save(newAffiliate);
     }
 }

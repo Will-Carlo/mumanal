@@ -8,5 +8,10 @@ public record AffiliateResponse(
 //        String affiliateCode,
 //        LocalDate admissionDate,
 //        String status,
-        PersonResponse person
+        String firstName,
+        String secondName,
+        String paternalSurname,
+        String maternalSurname,
+        String fullName,
+        String identityCard
 ) {}
