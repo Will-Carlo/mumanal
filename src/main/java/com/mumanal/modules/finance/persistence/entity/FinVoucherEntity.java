@@ -29,7 +29,7 @@ public class FinVoucherEntity extends AuditableEntity implements Serializable {
     @Column(name = "deposit_date", nullable = false)
     private LocalDateTime depositDate;
 
-    @Column(name = "registration_date")
+    @Column(name = "registration_date", columnDefinition = "DATETIME(6)")
     private LocalDateTime registrationDate;
 
 //    @Column(name = "bank_name")

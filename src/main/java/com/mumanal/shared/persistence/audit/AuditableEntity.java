@@ -23,7 +23,7 @@ public class AuditableEntity {
     @CreatedBy
     private String createdBy;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, columnDefinition = "DATETIME(6)")
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -31,7 +31,7 @@ public class AuditableEntity {
     @LastModifiedBy
     private String updatedBy;
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", columnDefinition = "DATETIME(6)")
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
