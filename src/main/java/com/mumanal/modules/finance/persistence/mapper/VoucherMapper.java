@@ -8,7 +8,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {BankMapper.class, PersonMapper.class})
+@Mapper(componentModel = "spring", uses = {BankMapper.class, AffiliateMapper.class})
 public interface VoucherMapper {
 
     VoucherResponse toDto(FinVoucherEntity entity);

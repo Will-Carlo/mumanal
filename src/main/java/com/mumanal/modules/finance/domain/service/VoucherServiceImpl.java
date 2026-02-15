@@ -149,6 +149,7 @@ public class VoucherServiceImpl implements VoucherService {
 
         GenPersonEntity newPerson = new GenPersonEntity();
         newPerson.setFirstName(dto.firstName());
+        newPerson.setSecondName(dto.secondName());
         newPerson.setPaternalSurname(dto.paternalSurname());
         newPerson.setMaternalSurname(dto.maternalSurname());
         newPerson.setIdentityCard(dto.identityCard());
