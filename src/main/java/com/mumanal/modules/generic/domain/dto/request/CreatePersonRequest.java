@@ -10,19 +10,19 @@ public record CreatePersonRequest(
         @Size(max = 100)
         String firstName,
 
-        @NotBlank(message = "Paternal surname cannot be null")
+        @Size(max = 100)
+        String secondName,
+
         @Size(max = 45)
         String paternalSurname,
 
-        @NotBlank(message = "Maternal surname cannot be null")
         @Size(max = 45)
         String maternalSurname,
 
-        @NotBlank(message = "Identity Card (CI) is required")
         @Size(max = 45)
         String identityCard,
 
-        @NotNull(message = "Phone number is required")
+        // @NotNull(message = "Phone number is required")
         Integer phoneNumber,
 
         @Size(max = 100)

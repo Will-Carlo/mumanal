@@ -7,6 +7,9 @@ public record UpdatePersonRequest(
         @Size(max = 100)
         String firstName,
 
+        @Size(max = 100)
+        String secondName,
+
         @Size(max = 45)
         String paternalSurname,
 
