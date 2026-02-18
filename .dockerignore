@@ -1,0 +1,11 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+.idea
+.git
+.gitignore
+*.class
+*.log
+.DS_Store
