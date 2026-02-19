@@ -18,18 +18,18 @@ public class StorageController {
         this.storageService = storageService;
     }
 
-    @PostMapping("/upload")
-    public ResponseEntity<Map<String, String>> uploadImage(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam(value = "folder", defaultValue = "general") String folder,
-            @RequestParam(value = "customName", required = false) String customName
-    ) {
-        if (!storageService.isValidFolder(folder)) {
-            throw new IllegalArgumentException("Invalid folder destination");
-        }
-
-        String url = storageService.upload(file, folder, customName);
-
-        return ResponseEntity.ok(Map.of("url", url));
-    }
+//    @PostMapping("/upload")
+//    public ResponseEntity<Map<String, String>> uploadImage(
+//            @RequestParam("file") MultipartFile file,
+//            @RequestParam(value = "folder", defaultValue = "general") String folder,
+//            @RequestParam(value = "customName", required = false) String customName
+//    ) {
+//        if (!storageService.isValidFolder(folder)) {
+//            throw new IllegalArgumentException("Invalid folder destination");
+//        }
+//
+//        String url = storageService.upload(file, folder, customName);
+//
+//        return ResponseEntity.ok(Map.of("url", url));
+//    }
 }

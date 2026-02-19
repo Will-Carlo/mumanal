@@ -24,6 +24,7 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize(AppPermissions.SEC_USERS_MANAGE)
     public ResponseEntity<List<UserResponse>> getAll() {
         return ResponseEntity.ok(userService.getAll());
     }

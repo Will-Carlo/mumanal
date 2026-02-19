@@ -35,10 +35,10 @@ public class SecurityDataSeeder implements CommandLineRunner {
 
     // Contraseñas en application.properties
     @Value("${app.security.user.system-password}")
-    private String systemPassword;
+    private String rootUser;
 
     @Value("${app.security.user.wcarlo-password}")
-    private String wcarloPassword;
+    private String rootPassword;
 
     @Value("${app.security.user.marceloq-password}")
     private String marceloqPassword;
@@ -87,6 +87,12 @@ public class SecurityDataSeeder implements CommandLineRunner {
         SecPermissionEntity pVoucherRead = createPermission("FIN_VOUCHER_READ", "Ver y sacar reporte de vouchers registrados");
         SecPermissionEntity pVoucherManage = createPermission("FIN_VOUCHER_MANAGE", "Gestionar vouchers");
 
+        SecPermissionEntity pBankRead = createPermission("FIN_BANK_READ", "Ver bancos registrados en el sistema");
+        SecPermissionEntity pBankManage = createPermission("FIN_BANK_MANAGE", "Gestionar bancos");
+
+        SecPermissionEntity pAffiliateRead = createPermission("FIN_AFFILIATE_READ", "Ver y sacar reporte de afiliados");
+        SecPermissionEntity pAffiliateManage = createPermission("FIN_AFFILIATE_MANAGE", "Gestionar afiliados");
+
         // --- PERMISOS DE NAVEGACIÓN (ACCESS / VIEW) ---
         // Estos permisos solo sirven para que aparezca el botón en la barra lateral.
         SecPermissionEntity pGenDash = createPermission("GEN_DASHBOARD_VIEW", "Acceso al Dashboard");
@@ -107,7 +113,9 @@ public class SecurityDataSeeder implements CommandLineRunner {
                 // Seguridad y Sistema
                 pSecView, pUsersManage, pRolesManage, pAuditDeleted, pMenuManage, pParamManage,
                 // Finanzas
-                pVoucherRead, pVoucherManage
+                pVoucherRead, pVoucherManage,
+                pBankRead, pBankManage,
+                pAffiliateRead, pAffiliateManage
         ));
 
         // 4. FINANCE (Tesorero / Contador)
@@ -116,7 +124,9 @@ public class SecurityDataSeeder implements CommandLineRunner {
                 // Menus (Necesita ver Dashboard, Finanzas y Ventas para ver el flujo de caja)
                 pGenDash, pFinView,
                 // Finanzas
-                pVoucherRead, pVoucherManage
+                pVoucherRead, pVoucherManage,
+                pBankRead, pBankManage,
+                pAffiliateRead, pAffiliateManage
         ));
 
         // ============================================================================================
@@ -155,31 +165,32 @@ public class SecurityDataSeeder implements CommandLineRunner {
         // 4. USUARIOS
         // ============================================================================================
 
-        // 0. system -> Bot (Tiene los 3 roles)
-        GenPersonEntity sBot = createSystemPerson("SYSTEM", "BOT", "sysbot@mumanal.com");
+//        // 0. system -> Bot (Tiene los 3 roles)
+//        GenPersonEntity sBot = createSystemPerson("SYSTEM", "BOT", "sysbot@mumanal.com");
+//
+//        if (!userRepository.existsByUsername("system")) {
+//            SecUserEntity uSystem = createUserBase("system", systemPassword, sBot);
+//            // Roles
+//            assignRoleToUser(uSystem, roleRoot);
+//            assignRoleToUser(uSystem, roleFinance);
+//            System.out.println("   > Usuario creado: system [ROOT]");
+//        }
 
-        if (!userRepository.existsByUsername("system")) {
-            SecUserEntity uSystem = createUserBase("system", systemPassword, sBot);
+        // 0. system -> ROOT
+        GenPersonEntity sRoot = createSystemPerson("root", "", "sysbot@mumanal.com");
+
+        if (!userRepository.existsByUsername(rootUser)) {
+            SecUserEntity uSystem = createUserBase(rootUser, rootPassword, sRoot);
             // Roles
             assignRoleToUser(uSystem, roleRoot);
             assignRoleToUser(uSystem, roleFinance);
-            System.out.println("   > Usuario creado: system [ROOT, ADMIN, SELLER]");
+            System.out.println("   > Usuario creado: system [ROOT]");
         }
 
-        // 1. wcarlo -> Will Carlo (Tiene los 3 roles)
-        GenPersonEntity pWcarlo = createSystemPerson("Will", "Carlo", "wcarlo@mumanal.com");
-
-        if (!userRepository.existsByUsername("wcarlo")) {
-            SecUserEntity uWcarlo = createUserBase("wcarlo", wcarloPassword, pWcarlo);
-            // Roles
-            assignRoleToUser(uWcarlo, roleRoot);
-            System.out.println("   > Usuario creado: wcarlo [ROOT, ADMIN, SELLER]");
-        }
-
-        // 2. marceloq -> Marcelo Quiroga
+        // 1. marceloq -> Marcelo Quiroga
         GenPersonEntity pMarceloq = createSystemPerson("Marcelo", "Quiroga", "mquiroga@mumanal.com");
 
-        if (!userRepository.existsByUsername("daniela")) {
+        if (!userRepository.existsByUsername("marceloq")) {
             SecUserEntity uMarceloq = createUserBase("marceloq", marceloqPassword, pMarceloq);
             assignRoleToUser(uMarceloq, roleFinance);
             System.out.println("   > Usuario creado: marceloq [FINANCE]");
