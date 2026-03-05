@@ -7,10 +7,12 @@ import com.mumanal.modules.security.persistence.entity.SecMenuEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MenuMapper {
     // 1. Entity -> Response
     @Mapping(target = "children", source = "subMenus")

@@ -267,7 +267,7 @@ public class SecurityDataSeeder implements CommandLineRunner {
         p.setFirstName(name);
         p.setPaternalSurname(lastName);
         p.setEmail(email);
-        p.setPhoneNumber(0);
+        p.setPhoneNumber("70000000");
         p.setCreatedBy(SYSTEM_USER);
         p.setUpdatedBy(SYSTEM_USER);
         return personRepository.save(p);

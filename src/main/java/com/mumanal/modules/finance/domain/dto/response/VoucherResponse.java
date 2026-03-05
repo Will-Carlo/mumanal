@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 public record VoucherResponse(
         Integer id,
-        Integer depositNumber,
+        String depositNumber,
         LocalDateTime depositDate,
         LocalDateTime registrationDate,
         BigDecimal amount,

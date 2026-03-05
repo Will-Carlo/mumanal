@@ -8,5 +8,5 @@ public interface VoucherRepository {
     List<FinVoucherEntity> findAll();
     Optional<FinVoucherEntity> findById(Integer id);
     FinVoucherEntity save(FinVoucherEntity entity);
-    boolean existsByDepositNumberAndBank(Integer depositNumber, Integer bankId);
+    boolean existsByDepositNumberAndBank(String depositNumber, Integer bankId);
 }

@@ -11,5 +11,5 @@ public interface VoucherJpa extends ListCrudRepository<FinVoucherEntity, Integer
     Optional<FinVoucherEntity> findByIdAndEnabledTrue(Integer id);
 
     // Ejemplo de búsqueda útil: verificar duplicados de depósito
-    boolean existsByDepositNumberAndBankIdAndEnabledTrue(Integer depositNumber, Integer bankId);
+    boolean existsByDepositNumberAndBankIdAndEnabledTrue(String depositNumber, Integer bankId);
 }

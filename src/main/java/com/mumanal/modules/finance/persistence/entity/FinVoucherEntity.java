@@ -24,7 +24,7 @@ public class FinVoucherEntity extends AuditableEntity implements Serializable {
     private Integer id;
 
     @Column(name = "deposit_number", nullable = false)
-    private Integer depositNumber;
+    private String depositNumber;
 
     @Column(name = "deposit_date", nullable = false)
     private LocalDateTime depositDate;

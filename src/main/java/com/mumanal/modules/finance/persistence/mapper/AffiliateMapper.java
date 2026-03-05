@@ -10,7 +10,9 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {PersonMapper.class})
+@Mapper(componentModel = "spring",
+        uses = {PersonMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AffiliateMapper {
 
     @Mapping(source = "person.firstName", target = "firstName")

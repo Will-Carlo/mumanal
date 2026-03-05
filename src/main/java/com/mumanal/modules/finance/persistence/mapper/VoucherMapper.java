@@ -8,7 +8,9 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {BankMapper.class, AffiliateMapper.class})
+@Mapper(componentModel = "spring",
+        uses = {BankMapper.class, AffiliateMapper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface VoucherMapper {
 
     VoucherResponse toDto(FinVoucherEntity entity);

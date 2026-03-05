@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public record CreateVoucherRequest(
         @NotNull(message = "Deposit number is required")
-        Integer depositNumber,
+        String depositNumber,
 
         @NotNull(message = "Deposit date is required")
         LocalDateTime depositDate,

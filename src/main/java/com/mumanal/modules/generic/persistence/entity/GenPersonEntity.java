@@ -32,7 +32,7 @@ public class GenPersonEntity extends AuditableEntity implements Serializable {
     private String maternalSurname;
 
     @Column(name = "phone_number", length = 45)
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Column(length = 100)
     private String email;

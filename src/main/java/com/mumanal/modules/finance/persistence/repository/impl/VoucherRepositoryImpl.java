@@ -26,7 +26,7 @@ public class VoucherRepositoryImpl implements VoucherRepository {
     public FinVoucherEntity save(FinVoucherEntity entity) { return voucherJpa.save(entity); }
 
     @Override
-    public boolean existsByDepositNumberAndBank(Integer depositNumber, Integer bankId) {
+    public boolean existsByDepositNumberAndBank(String depositNumber, Integer bankId) {
         return voucherJpa.existsByDepositNumberAndBankIdAndEnabledTrue(depositNumber, bankId);
     }
 }

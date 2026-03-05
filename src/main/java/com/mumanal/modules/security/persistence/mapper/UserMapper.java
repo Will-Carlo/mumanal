@@ -7,16 +7,14 @@ import com.mumanal.modules.security.domain.dto.response.UserResponse;
 import com.mumanal.modules.security.persistence.entity.SecAssignedRoleEntity;
 import com.mumanal.modules.security.persistence.entity.SecUserEntity;
 import com.mumanal.shared.persistence.mapper.ParameterMapperHelper;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring",
-        uses = {PersonMapper.class, ParameterMapperHelper.class})
+        uses = {PersonMapper.class, ParameterMapperHelper.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     // 1. Entity → Response (Read)
