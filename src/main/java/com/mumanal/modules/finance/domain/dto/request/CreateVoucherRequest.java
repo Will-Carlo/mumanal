@@ -22,6 +22,9 @@ public record CreateVoucherRequest(
         @NotNull(message = "Period is required")
         LocalDate period,
 
+        @NotNull(message = "City is required")
+        Integer cityId,
+
         @NotNull(message = "Bank information is required")
         @Valid
         BankReferenceDto bank,

@@ -10,7 +10,9 @@ import com.mumanal.modules.finance.persistence.entity.FinAffiliateEntity;
 import com.mumanal.modules.finance.persistence.entity.FinBankEntity;
 import com.mumanal.modules.finance.persistence.entity.FinVoucherEntity;
 import com.mumanal.modules.finance.persistence.mapper.VoucherMapper;
+import com.mumanal.modules.generic.domain.repository.CityRepository;
 import com.mumanal.modules.generic.domain.repository.PersonRepository;
+import com.mumanal.modules.generic.persistence.entity.GenCityEntity;
 import com.mumanal.modules.generic.persistence.entity.GenPersonEntity;
 import com.mumanal.shared.domain.exception.ResourceNotFoundException;
 import com.mumanal.shared.domain.exception.ResourceAlreadyExistsException;
@@ -26,17 +28,19 @@ public class VoucherServiceImpl implements VoucherService {
     private final VoucherRepository voucherRepository;
     private final BankRepository bankRepository;       // Inyección de repo Banco
     private final PersonRepository personRepository;   // Inyección de repo Persona
+    private final CityRepository cityRepository;
     private final VoucherMapper voucherMapper;
     private final AffiliateRepository affiliateRepository;
     private final String RESOURCE = "Voucher";
 
     public VoucherServiceImpl(VoucherRepository voucherRepository,
                               BankRepository bankRepository,
-                              PersonRepository personRepository,
+                              PersonRepository personRepository, CityRepository cityRepository,
                               VoucherMapper voucherMapper, AffiliateRepository affiliateRepository) {
         this.voucherRepository = voucherRepository;
         this.bankRepository = bankRepository;
         this.personRepository = personRepository;
+        this.cityRepository = cityRepository;
         this.voucherMapper = voucherMapper;
         this.affiliateRepository = affiliateRepository;
     }
@@ -66,13 +70,17 @@ public class VoucherServiceImpl implements VoucherService {
         FinAffiliateEntity affiliateEntity = resolveAffiliate(request.affiliate());
         voucher.setAffiliate(affiliateEntity);
 
-        // 3. Validar duplicidad de voucher (Mismo banco, mismo nro deposito)
+        // 3. City
+        GenCityEntity cityEntity = cityRepository.findById(request.cityId())
+                .orElseThrow(() -> new ResourceNotFoundException("City", "id", request.cityId()));
+        voucher.setCity(cityEntity);
+
+        // 4. Validar duplicidad de voucher (Mismo banco, mismo nro deposito)
         if (voucherRepository.existsByDepositNumberAndBank(request.depositNumber(), bankEntity.getId())) {
-            // Opcional: lanzar excepción o advertencia
-            throw new ResourceAlreadyExistsException(RESOURCE, "depositNumber", request.depositNumber().toString());
+            throw new ResourceAlreadyExistsException(RESOURCE, "depositNumber", request.depositNumber());
         }
 
-        // 4. Setear datos directos
+        // 5. Setear datos directos
         voucher.setDepositNumber(request.depositNumber());
         voucher.setDepositDate(request.depositDate());
         voucher.setAmount(request.amount());
@@ -87,6 +95,12 @@ public class VoucherServiceImpl implements VoucherService {
     public VoucherResponse update(Integer id, UpdateVoucherRequest request) {
         FinVoucherEntity entity = voucherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(RESOURCE, "id", id.toString()));
+
+        if (request.cityId() != null) {
+            GenCityEntity cityEntity = cityRepository.findById(request.cityId())
+                .orElseThrow(() -> new ResourceNotFoundException("City", "id", request.cityId()));
+            entity.setCity(cityEntity);
+        }
 
         // Actualizar relaciones solo si vienen IDs nuevos
         if (request.bankId() != null) {

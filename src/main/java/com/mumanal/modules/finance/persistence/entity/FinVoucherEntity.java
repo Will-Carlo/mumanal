@@ -1,5 +1,6 @@
 package com.mumanal.modules.finance.persistence.entity;
 
+import com.mumanal.modules.generic.persistence.entity.GenCityEntity;
 import com.mumanal.modules.generic.persistence.entity.GenPersonEntity;
 import com.mumanal.shared.persistence.audit.AuditableEntity;
 import jakarta.persistence.*;
@@ -40,6 +41,10 @@ public class FinVoucherEntity extends AuditableEntity implements Serializable {
 
 //    @Column(name = "account_number")
 //    private String accountNumber;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private GenCityEntity city;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bank_id", nullable = false)

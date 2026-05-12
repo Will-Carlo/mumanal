@@ -1,5 +1,6 @@
 package com.mumanal.modules.finance.domain.dto.response;
 
+import com.mumanal.modules.generic.domain.dto.response.CityResponse;
 import com.mumanal.modules.generic.domain.dto.response.PersonResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ public record VoucherResponse(
         LocalDateTime registrationDate,
         BigDecimal amount,
         LocalDate period,
+        CityResponse city,
         BankResponse bank,
         AffiliateResponse affiliate
 ) {}

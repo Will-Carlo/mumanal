@@ -11,6 +11,7 @@ public record UpdateVoucherRequest(
         @Positive
         BigDecimal amount,
         LocalDate period,
+        Integer cityId,
         Integer bankId,
         Integer personId
 ) {}
